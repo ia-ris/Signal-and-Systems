@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#10131c">
+  <title>Discrete Convolution | Signal &amp; Systems</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #10131c;
+      --panel: #181d29;
+      --panel-soft: #1d2432;
+      --line: #30394b;
+      --text: #edf2fb;
+      --muted: #9da9bd;
+      --cyan: #66e3d2;
+      --violet: #b7a0ff;
+      --orange: #ffb86b;
+      --red: #ff7792;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-width: 320px;
+      background: radial-gradient(ellipse at 50% -20%, #263348 0, var(--bg) 58%);
+      color: var(--text);
+      line-height: 1.5;
+    }
+    .wrap { width: min(1120px, calc(100% - 40px)); margin: 0 auto; }
+    header { padding: 54px 0 34px; }
+    .eyebrow { color: var(--cyan); font-size: .76rem; font-weight: 750; letter-spacing: .16em; text-transform: uppercase; }
+    h1 { margin: 12px 0 10px; font-size: clamp(2.2rem, 6vw, 4rem); line-height: 1.05; letter-spacing: -.055em; }
+    .intro { max-width: 680px; color: var(--muted); font-size: 1.05rem; }
+    .chips { display: flex; flex-wrap: wrap; gap: 9px; margin-top: 21px; }
+    .chip { border: 1px solid var(--line); border-radius: 999px; padding: 6px 11px; color: #c8d2e3; background: #171d29b8; font-size: .82rem; }
+    main { padding-bottom: 56px; }
+    .section-heading { display: flex; align-items: end; justify-content: space-between; gap: 16px; margin: 26px 0 14px; }
+    h2 { margin: 0; font-size: 1.28rem; letter-spacing: -.02em; }
+    .hint { margin: 0; color: var(--muted); font-size: .88rem; }
+    .charts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+    .card { min-width: 0; overflow: hidden; border: 1px solid var(--line); border-radius: 15px; background: linear-gradient(145deg, #1b2230, #151a25); box-shadow: 0 12px 35px #00000018; }
+    .chart-card { padding: 17px 15px 11px; }
+    .chart-title { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin: 0 2px 6px; }
+    .chart-title h3 { margin: 0; font-size: .97rem; font-weight: 650; }
+    .chart-title span { font-size: .75rem; color: var(--muted); }
+    svg.plot { display: block; width: 100%; height: auto; overflow: visible; }
+    .axis { stroke: #77849a; stroke-width: 1; }
+    .gridline { stroke: #30394b; stroke-width: 1; stroke-dasharray: 3 5; }
+    .tick { fill: #9da9bd; font-size: 10px; }
+    .axis-label { fill: #c9d4e5; font-size: 11px; font-weight: 600; }
+    .stem { stroke-width: 2; }
+    .dot { stroke: #151a25; stroke-width: 1.5; }
+    .code-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+    .code-card { padding: 0; }
+    .code-head { display: flex; justify-content: space-between; align-items: center; padding: 13px 16px; border-bottom: 1px solid var(--line); background: #ffffff04; }
+    .file-name { font: 600 .88rem ui-monospace, SFMono-Regular, Menlo, monospace; }
+    .file-type { color: var(--muted); font-size: .76rem; }
+    pre { margin: 0; padding: 17px 18px 19px; overflow-x: auto; color: #dce5f4; font: 12.5px/1.72 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; tab-size: 4; }
+    .kw { color: var(--violet); }
+    .com { color: #8494aa; font-style: italic; }
+    .fn { color: var(--cyan); }
+    .num { color: var(--orange); }
+    .result { margin-top: 14px; padding: 17px 19px; display: flex; align-items: center; justify-content: space-between; gap: 20px; }
+    .result strong { display: block; font-size: .92rem; }
+    .result p { margin: 4px 0 0; color: var(--muted); font-size: .84rem; }
+    .values { color: var(--cyan); font: 600 .9rem/1.8 ui-monospace, SFMono-Regular, Menlo, monospace; text-align: right; overflow-wrap: anywhere; }
+    footer { border-top: 1px solid var(--line); padding: 19px 0 28px; color: var(--muted); font-size: .82rem; }
+    footer a { color: #b7c8e3; text-decoration: none; }
+    footer a:hover { color: var(--cyan); }
+    @media (max-width: 760px) { .charts { grid-template-columns: 1fr; } .chart-card { max-width: none; } .plot { max-width: 520px; margin: auto; } }
+    @media (max-width: 620px) { .wrap { width: min(100% - 28px, 1120px); } header { padding-top: 38px; } .section-heading { align-items: start; flex-direction: column; gap: 4px; } .code-grid { grid-template-columns: 1fr; } .result { align-items: start; flex-direction: column; gap: 8px; } .values { text-align: left; } }
+  </style>
+</head>
+<body>
+  <header class="wrap">
+    <div class="eyebrow">Signal &amp; Systems · MATLAB lab</div>
+    <h1>Discrete convolution</h1>
+    <p class="intro">A visual walkthrough of the repository’s two MATLAB files: the input sequences, their convolution, and the code that computes and plots the result.</p>
+    <div class="chips"><span class="chip">Linear time-invariant systems</span><span class="chip">Finite discrete-time signals</span><span class="chip">Output support: n = −4…7</span></div>
+  </header>
+
+  <main class="wrap">
+    <div class="section-heading">
+      <h2>Signal plots</h2>
+      <p class="hint">Stem plots use the exact sample values from <code>Untitled4.m</code>.</p>
+    </div>
+    <section class="charts" aria-label="Input and convolution signal plots">
+      <article class="card chart-card"><div class="chart-title"><h3 style="color:var(--cyan)">Input x[n]</h3><span>n = −3…3</span></div><svg class="plot" id="plot-x" role="img" aria-label="Stem plot of x of n"></svg></article>
+      <article class="card chart-card"><div class="chart-title"><h3 style="color:var(--violet)">Impulse response h[n]</h3><span>n = −1…4</span></div><svg class="plot" id="plot-h" role="img" aria-label="Stem plot of h of n"></svg></article>
+      <article class="card chart-card"><div class="chart-title"><h3 style="color:var(--orange)">Convolution y[n]</h3><span>n = −4…7</span></div><svg class="plot" id="plot-y" role="img" aria-label="Stem plot of the convolution output y of n"></svg></article>
+    </section>
+
+    <div class="section-heading" style="margin-top:34px">
+      <h2>The MATLAB files</h2>
+      <p class="hint">Original source, formatted for readability.</p>
+    </div>
+    <section class="code-grid" aria-label="MATLAB source code">
+      <article class="card code-card">
+        <div class="code-head"><span class="file-name">Untitled4.m</span><span class="file-type">Example &amp; plotting script</span></div>
+        <pre><code>x = [<span class="num">3</span>, <span class="num">11</span>, <span class="num">7</span>, <span class="num">0</span>, <span class="num">-1</span>, <span class="num">4</span>, <span class="num">2</span>];
+nx = <span class="num">-3</span>:<span class="num">3</span>;
+
+h = [<span class="num">2</span>, <span class="num">3</span>, <span class="num">0</span>, <span class="num">-5</span>, <span class="num">2</span>, <span class="num">1</span>];
+nh = <span class="num">-1</span>:<span class="num">4</span>;
+
+[y, ny] = myconv(x, nx, h, nh)
+
+<span class="com">% Plot the result</span>
+<span class="fn">stem</span>(ny, y);
+<span class="fn">xlabel</span>(<span class="str">'n'</span>);
+<span class="fn">ylabel</span>(<span class="str">'y[n]'</span>);
+<span class="fn">title</span>(<span class="str">'Convolution'</span>);
+<span class="fn">grid</span> on;</code></pre>
+      </article>
+      <article class="card code-card">
+        <div class="code-head"><span class="file-name">myconv.m</span><span class="file-type">Modified convolution routine</span></div>
+        <pre><code><span class="kw">function</span> [y, ny] = myconv(x, nx, h, nh)
+<span class="com">% MYCONV Modified convolution routine for signal processing</span>
+<span class="com">%   [y, ny] = myconv(x, nx, h, nh)</span>
+<span class="com">%   y  = convolution result</span>
+<span class="com">%   ny = index support of y</span>
+<span class="com">%   x  = first signal</span>
+<span class="com">%   nx = index support of x</span>
+<span class="com">%   h  = second signal</span>
+<span class="com">%   nh = index support of h</span>
+
+    <span class="com">% Calculate the starting and ending indices of y[n]</span>
+    ny_start = nx(<span class="num">1</span>) + nh(<span class="num">1</span>);
+    ny_end   = nx(<span class="kw">end</span>) + nh(<span class="kw">end</span>);
+
+    <span class="com">% Generate the index vector for y[n]</span>
+    ny = ny_start : ny_end;
+
+    <span class="com">% Compute the convolution using MATLAB's built-in conv function</span>
+    y = <span class="fn">conv</span>(x, h);
+
+<span class="kw">end</span></code></pre>
+      </article>
+    </section>
+
+    <aside class="card result" aria-live="polite">
+      <div><strong>Computed result</strong><p>y[n] = x[n] * h[n], with output indices starting at nx(1) + nh(1).</p></div>
+      <div class="values" id="result-values"></div>
+    </aside>
+  </main>
+  <footer><div class="wrap">Source: <a href="https://github.com/ia-ris/Signal-and-Systems">ia-ris/Signal-and-Systems</a> · The charts are rendered locally in this page.</div></footer>
+
+  <script>
+    const x = [3, 11, 7, 0, -1, 4, 2];
+    const nx = [-3, -2, -1, 0, 1, 2, 3];
+    const h = [2, 3, 0, -5, 2, 1];
+    const nh = [-1, 0, 1, 2, 3, 4];
+    const y = Array(x.length + h.length - 1).fill(0);
+    for (let i = 0; i < x.length; i++) {
+      for (let j = 0; j < h.length; j++) y[i + j] += x[i] * h[j];
+    }
+    const ny = Array.from({ length: y.length }, (_, i) => nx[0] + nh[0] + i);
+
+    function drawStem(id, indices, values, color) {
+      const svg = document.getElementById(id);
+      const W = 350, H = 205, left = 34, right = 12, top = 14, bottom = 34;
+      const zeroY = top + (H - top - bottom) / 2;
+      const maxAbs = Math.max(...values.map(Math.abs), 1);
+      const plotHeight = H - top - bottom;
+      const scale = (plotHeight / 2 - 9) / maxAbs;
+      const xPos = i => left + (indices.length === 1 ? 0 : i * (W - left - right) / (indices.length - 1));
+      const yPos = value => zeroY - value * scale;
+      const ticks = [-maxAbs, 0, maxAbs];
+      let out = '';
+      ticks.forEach(t => {
+        const py = yPos(t);
+        out += `<line class="gridline" x1="${left}" y1="${py}" x2="${W-right}" y2="${py}"/>`;
+        out += `<text class="tick" x="${left-7}" y="${py+3}" text-anchor="end">${t}</text>`;
+      });
+      out += `<line class="axis" x1="${left}" y1="${zeroY}" x2="${W-right}" y2="${zeroY}"/>`;
+      out += `<text class="axis-label" x="${W-right}" y="${H-5}" text-anchor="end">n</text>`;
+      values.forEach((v, i) => {
+        const px = xPos(i), py = yPos(v);
+        out += `<line class="stem" x1="${px}" y1="${zeroY}" x2="${px}" y2="${py}" stroke="${color}"/>`;
+        out += `<circle class="dot" cx="${px}" cy="${py}" r="4" fill="${color}"/>`;
+        out += `<text class="tick" x="${px}" y="${H-17}" text-anchor="middle">${indices[i]}</text>`;
+        out += `<text class="tick" x="${px}" y="${py + (v >= 0 ? -8 : 14)}" text-anchor="middle" fill="#edf2fb">${v}</text>`;
+      });
+      svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
+      svg.innerHTML = out;
+    }
+
+    drawStem('plot-x', nx, x, '#66e3d2');
+    drawStem('plot-h', nh, h, '#b7a0ff');
+    drawStem('plot-y', ny, y, '#ffb86b');
+    document.getElementById('result-values').textContent = `n = ${ny[0]}…${ny[ny.length - 1]}  ·  [${y.join(', ')}]`;
+  </script>
+</body>
+</html>
