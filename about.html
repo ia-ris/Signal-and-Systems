@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>ABOUT // SIGNAL AND SYSTEMS</title>
+  <style>
+    :root{--ink:#02090e;--cyan:#58e8ef;--cyan2:#9ffff7;--lime:#72ffca;--line:rgba(98,219,234,.46)}
+    *{box-sizing:border-box}html{min-height:100%}body{margin:0;min-width:320px;min-height:100vh;color:#c9f8f7;font-family:"Courier New",ui-monospace,monospace;background:#02070c;overflow-x:hidden}
+    body:before{content:"";position:fixed;inset:0;z-index:-2;background:linear-gradient(rgba(15,55,67,.18) 1px,transparent 1px),linear-gradient(90deg,rgba(15,55,67,.18) 1px,transparent 1px),radial-gradient(circle at 50% 40%,rgba(31,139,154,.12),transparent 36%),#02070c;background-size:36px 36px,36px 36px,100% 100%,100% 100%}
+    body:after{content:"";position:fixed;inset:0;z-index:20;pointer-events:none;background:repeating-linear-gradient(0deg,rgba(255,255,255,.018) 0,rgba(255,255,255,.018) 1px,transparent 1px,transparent 4px)}
+    .hud{min-height:100vh;padding:10px 20px 20px;background:linear-gradient(90deg,rgba(0,9,14,.1),rgba(21,77,90,.12),rgba(0,9,14,.1))}
+    .topbar{height:46px;max-width:1440px;margin:auto;border:1px solid var(--line);border-radius:3px;display:flex;align-items:center;justify-content:space-between;padding:0 16px;background:rgba(5,29,38,.9)}
+    .brand{display:flex;align-items:center;gap:12px;text-decoration:none;color:#c9f8f7}.brand-mark{width:24px;height:24px;border:1px solid var(--cyan);clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%)}
+    .brand strong{display:block;font-size:12px}.brand small{display:block;color:#62aab1;font-size:7px;margin-top:2px}
+    nav{display:flex;gap:8px}nav a{color:#75bac0;text-decoration:none;font-size:9px;letter-spacing:.12em;border:1px solid rgba(98,219,234,.25);padding:8px 10px}nav a:hover,nav a.active{color:var(--cyan2);border-color:var(--cyan);background:rgba(88,232,239,.08)}
+    .canvas{position:relative;max-width:1440px;height:calc(100vh - 76px);min-height:620px;margin:12px auto 0;border:1px solid rgba(88,204,218,.22);padding:clamp(24px,5vw,72px);background:linear-gradient(135deg,rgba(3,15,22,.68),rgba(5,25,32,.42));overflow:auto}
+    .about-grid{display:grid;grid-template-columns:1.3fr .7fr;gap:24px;height:100%}.module{border:1px solid rgba(81,205,219,.34);background:linear-gradient(135deg,rgba(7,26,35,.94),rgba(5,18,26,.86));padding:28px 32px}
+    h1{font-size:clamp(22px,4vw,44px);letter-spacing:.08em;color:var(--cyan2);margin:0 0 18px}h2{font-size:11px;letter-spacing:.18em;color:var(--cyan);margin:24px 0 10px}.eyebrow{color:var(--lime);font-size:9px;letter-spacing:.18em}p{max-width:760px;color:#9ed1d2;font-size:12px;line-height:1.9}.formula{border-left:2px solid var(--cyan);padding:12px 16px;background:rgba(54,172,184,.07);color:var(--cyan2);font-size:16px}
+    .metric{margin:12px 0;padding:14px;border-left:1px solid var(--cyan);background:rgba(54,172,184,.07)}.metric small{display:block;color:#5d9ba1;font-size:8px}.metric strong{display:block;margin-top:5px;color:#aefcf4;font-size:13px}
+    .source-link{display:inline-block;margin-top:20px;color:#75bac0;text-decoration:none;font-size:9px}.source-link:hover{color:var(--cyan)}
+    @media(max-width:800px){.hud{padding:8px}.topbar{height:auto;min-height:46px}.brand small{display:none}.canvas{height:auto;min-height:calc(100vh - 72px);padding:16px}.about-grid{grid-template-columns:1fr}.module{padding:22px}}
+  </style>
+</head>
+<body>
+  <div class="hud">
+    <header class="topbar">
+      <a class="brand" href="index.html" aria-label="Convolution Analysis home"><div class="brand-mark"></div><div><strong>CONV//SYS</strong><small>DISCRETE SIGNAL LAB</small></div></a>
+      <nav aria-label="Primary navigation"><a href="index.html">ANALYSIS</a><a class="active" href="about.html" aria-current="page">ABOUT</a></nav>
+    </header>
+    <main class="canvas">
+      <div class="about-grid">
+        <section class="module">
+          <span class="eyebrow">LAB DOCUMENTATION // 001</span>
+          <h1>ABOUT THIS PAGE</h1>
+          <p>This web page shows the graph of the code and visualizes discrete convolution: the input signal, the impulse response, and the resulting output.</p>
+          <p>It is based on the MATLAB lab assignment in <strong>Signal-and-Systems</strong> and presents the convolution results in an interactive graphical interface.</p>
+          <h2>CONVOLUTION MODEL</h2>
+          <div class="formula">y[n] = Σ x[k]h[n − k]</div>
+          <h2>IMPLEMENTATION</h2>
+          <p>The MATLAB routine <strong>myconv.m</strong> calculates the output with the built-in <strong>conv</strong> function and determines the output index range from the two input index vectors.</p>
+          <a class="source-link" href="https://github.com/ia-ris/Signal-and-Systems">VIEW SOURCE: IA-RIS/SIGNAL-AND-SYSTEMS →</a>
+        </section>
+        <aside class="module">
+          <span class="eyebrow">SYSTEM DATA</span>
+          <div class="metric"><small>PROJECT</small><strong>Signal-and-Systems</strong></div>
+          <div class="metric"><small>LANGUAGE</small><strong>MATLAB // 100%</strong></div>
+          <div class="metric"><small>INPUT SUPPORT</small><strong>X[N] // −3 : 3</strong></div>
+          <div class="metric"><small>RESPONSE SUPPORT</small><strong>H[N] // −1 : 4</strong></div>
+          <div class="metric"><small>OUTPUT SUPPORT</small><strong>Y[N] // −4 : 7</strong></div>
+          <div class="metric"><small>PURPOSE</small><strong>LAB ASSIGNMENT</strong></div>
+        </aside>
+      </div>
+    </main>
+  </div>
+</body>
+</html>
