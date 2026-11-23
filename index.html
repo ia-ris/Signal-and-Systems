@@ -2,195 +2,82 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#10131c">
-  <title>Discrete Convolution | Signal &amp; Systems</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>SIGNAL // CONVOLUTION ANALYSIS</title>
   <style>
-    :root {
-      color-scheme: dark;
-      --bg: #10131c;
-      --panel: #181d29;
-      --panel-soft: #1d2432;
-      --line: #30394b;
-      --text: #edf2fb;
-      --muted: #9da9bd;
-      --cyan: #66e3d2;
-      --violet: #b7a0ff;
-      --orange: #ffb86b;
-      --red: #ff7792;
-      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-    }
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      min-width: 320px;
-      background: radial-gradient(ellipse at 50% -20%, #263348 0, var(--bg) 58%);
-      color: var(--text);
-      line-height: 1.5;
-    }
-    .wrap { width: min(1120px, calc(100% - 40px)); margin: 0 auto; }
-    header { padding: 54px 0 34px; }
-    .eyebrow { color: var(--cyan); font-size: .76rem; font-weight: 750; letter-spacing: .16em; text-transform: uppercase; }
-    h1 { margin: 12px 0 10px; font-size: clamp(2.2rem, 6vw, 4rem); line-height: 1.05; letter-spacing: -.055em; }
-    .intro { max-width: 680px; color: var(--muted); font-size: 1.05rem; }
-    .chips { display: flex; flex-wrap: wrap; gap: 9px; margin-top: 21px; }
-    .chip { border: 1px solid var(--line); border-radius: 999px; padding: 6px 11px; color: #c8d2e3; background: #171d29b8; font-size: .82rem; }
-    main { padding-bottom: 56px; }
-    .section-heading { display: flex; align-items: end; justify-content: space-between; gap: 16px; margin: 26px 0 14px; }
-    h2 { margin: 0; font-size: 1.28rem; letter-spacing: -.02em; }
-    .hint { margin: 0; color: var(--muted); font-size: .88rem; }
-    .charts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
-    .card { min-width: 0; overflow: hidden; border: 1px solid var(--line); border-radius: 15px; background: linear-gradient(145deg, #1b2230, #151a25); box-shadow: 0 12px 35px #00000018; }
-    .chart-card { padding: 17px 15px 11px; }
-    .chart-title { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin: 0 2px 6px; }
-    .chart-title h3 { margin: 0; font-size: .97rem; font-weight: 650; }
-    .chart-title span { font-size: .75rem; color: var(--muted); }
-    svg.plot { display: block; width: 100%; height: auto; overflow: visible; }
-    .axis { stroke: #77849a; stroke-width: 1; }
-    .gridline { stroke: #30394b; stroke-width: 1; stroke-dasharray: 3 5; }
-    .tick { fill: #9da9bd; font-size: 10px; }
-    .axis-label { fill: #c9d4e5; font-size: 11px; font-weight: 600; }
-    .stem { stroke-width: 2; }
-    .dot { stroke: #151a25; stroke-width: 1.5; }
-    .code-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
-    .code-card { padding: 0; }
-    .code-head { display: flex; justify-content: space-between; align-items: center; padding: 13px 16px; border-bottom: 1px solid var(--line); background: #ffffff04; }
-    .file-name { font: 600 .88rem ui-monospace, SFMono-Regular, Menlo, monospace; }
-    .file-type { color: var(--muted); font-size: .76rem; }
-    pre { margin: 0; padding: 17px 18px 19px; overflow-x: auto; color: #dce5f4; font: 12.5px/1.72 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; tab-size: 4; }
-    .kw { color: var(--violet); }
-    .com { color: #8494aa; font-style: italic; }
-    .fn { color: var(--cyan); }
-    .num { color: var(--orange); }
-    .result { margin-top: 14px; padding: 17px 19px; display: flex; align-items: center; justify-content: space-between; gap: 20px; }
-    .result strong { display: block; font-size: .92rem; }
-    .result p { margin: 4px 0 0; color: var(--muted); font-size: .84rem; }
-    .values { color: var(--cyan); font: 600 .9rem/1.8 ui-monospace, SFMono-Regular, Menlo, monospace; text-align: right; overflow-wrap: anywhere; }
-    footer { border-top: 1px solid var(--line); padding: 19px 0 28px; color: var(--muted); font-size: .82rem; }
-    footer a { color: #b7c8e3; text-decoration: none; }
-    footer a:hover { color: var(--cyan); }
-    @media (max-width: 760px) { .charts { grid-template-columns: 1fr; } .chart-card { max-width: none; } .plot { max-width: 520px; margin: auto; } }
-    @media (max-width: 620px) { .wrap { width: min(100% - 28px, 1120px); } header { padding-top: 38px; } .section-heading { align-items: start; flex-direction: column; gap: 4px; } .code-grid { grid-template-columns: 1fr; } .result { align-items: start; flex-direction: column; gap: 8px; } .values { text-align: left; } }
+    :root{--ink:#02090e;--cyan:#58e8ef;--cyan2:#9ffff7;--blue:#1d9aa8;--lime:#72ffca;--glass:rgba(6,24,33,.82);--line:rgba(98,219,234,.46)}
+    *{box-sizing:border-box}html{min-height:100%}body{margin:0;min-width:320px;min-height:100vh;color:#c9f8f7;font-family:"Courier New",ui-monospace,monospace;background:#02070c;overflow-x:hidden}
+    body:before{content:"";position:fixed;inset:0;z-index:-2;background:linear-gradient(rgba(15,55,67,.18) 1px,transparent 1px),linear-gradient(90deg,rgba(15,55,67,.18) 1px,transparent 1px),radial-gradient(circle at 52% 44%,#174350 0,#07141d 28%,#02070c 68%);background-size:100% 24px,24px 100%,100% 100%}
+    body:after{content:"";position:fixed;inset:0;z-index:20;pointer-events:none;background:repeating-linear-gradient(0deg,rgba(255,255,255,.018) 0,rgba(255,255,255,.018) 1px,transparent 1px,transparent 3px);mix-blend-mode:screen}
+    .hud{min-height:100vh;padding:10px 20px 20px;background:linear-gradient(90deg,rgba(0,9,14,.1),rgba(21,77,90,.12),rgba(0,9,14,.1))}
+    .topbar{height:46px;border:1px solid var(--line);border-radius:3px;display:flex;align-items:center;justify-content:space-between;padding:0 16px;background:linear-gradient(90deg,rgba(5,29,38,.92),rgba(11,45,56,.74),rgba(5,29,38,.92));box-shadow:inset 0 0 18px rgba(91,226,240,.06);text-transform:uppercase}
+    .brand{display:flex;align-items:center;gap:12px}.brand-mark{width:24px;height:24px;border:1px solid var(--cyan);clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%);box-shadow:0 0 12px var(--cyan)}.brand strong{font-size:14px;letter-spacing:.16em}.brand small{display:block;color:#70bdc7;font-size8px;margin-top:-2px}
+    .status{display:flex;align-items:center;gap:22px;font-size:9px;letter-spacing:.12em}.live{color:var(--lime)}.live:before{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--lime);box-shadow:0 0 8px var(--lime);margin-right:7px}
+    .canvas{position:relative;max-width:1440px;height:calc(100vh - 76px);min-height:720px;margin:12px auto 0;border:1px solid rgba(88,204,218,.22);overflow:hidden;background:linear-gradient(135deg,rgba(20,82,94,.16),transparent 30%,rgba(3,17,24,.1));clip-path:polygon(0 12px,12px 12px,12px 0,calc(100% - 12px) 0,calc(100% - 12px) 12px,100% 12px,100% calc(100% - 12px),calc(100% - 12px) calc(100% - 12px),calc(100% - 12px) 100%,12px 100%,12px calc(100% - 12px),0 calc(100% - 12px))}
+    .canvas:before{content:"";position:absolute;inset:0;background-image:linear-gradient(rgba(73,177,191,.09) 1px,transparent 1px),linear-gradient(90deg,rgba(73,177,191,.09) 1px,transparent 1px);background-size:40px 40px}.corner{position:absolute;width:30px;height:30px;border-color:var(--cyan);border-style:solid;z-index:3}.tl{left:-1px;top:-1px;border-width:2px 0 0 2px}.tr{right:-1px;top:-1px;border-width:2px 2px 0 0}.bl{left:-1px;bottom:-1px;border-width:0 0 2px 2px}.br{right:-1px;bottom:-1px;border-width:0 2px 2px 0}
+    .module{position:absolute;z-index:2;border:1px solid rgba(81,205,219,.34);background:linear-gradient(135deg,rgba(7,26,35,.94),rgba(5,18,26,.86));box-shadow:inset 0 0 28px rgba(49,185,199,.035),0 6px 24px rgba(0,0,0,.26);border-radius:2px}.module:before{content:"";position:absolute;left:-1px;top:-1px;width:34px;height:2px;background:var(--cyan);box-shadow:0 0 8px var(--cyan)}.module-title{height:29px;border-bottom:1px solid rgba(91,189,200,.19);display:flex;align-items:center;justify-content:space-between;padding:0 9px;font-size8px;letter-spacing:.12em;text-transform:uppercase;color:#98dbe0}.module-title b{color:#d7ffff;font-size:9px}.module-title i{width:5px;height:5px;border:1px solid var(--cyan);border-radius:50%;box-shadow:0 0 5px var(--cyan)}
+    .mainplot{left:20%;top:5.5%;width:60%;height:57%}.mainplot-inner{position:absolute;inset:38px 10px 8px}.mainplot svg{width:100%;height:100%;display:block}.watermark{position:absolute;right:15px;bottom:12px;font-size:9px;color:rgba(146,220,225,.35);letter-spacing:.18em}
+    .xpanel{left:1.5%;top:5.5%;width:17%;height:38%}.hpanel{right:1.5%;top:5.5%;width:17%;height:38%}.ypanel{left:20%;bottom:3.5%;width:60%;height:31%}.xpanel svg,.hpanel svg,.ypanel svg{width:100%;height:calc(100% - 29px)}
+    .codepanel{left:1.5%;bottom:3.5%;width:17%;height:48%;overflow:hidden}.codepanel pre{margin:0;height:calc(100% - 29px);overflow:auto;padding:10px 9px;font-size:7.5px;line-height:1.62;color:#a7d0d4;scrollbar-width:thin}.kw{color:#74eff0}.comment{color:#60868e}.number{color:#d9efa2}
+    .resultpanel{right:1.5%;bottom:3.5%;width:17%;height:48%}.metric{margin:11px 9px;padding:8px;border-left:1px solid var(--cyan);background:rgba(54,172,184,.07)}.metric small{display:block;font-size7px;color:#79adb4}.metric strong{display:block;margin-top:4px;color:var(--cyan2);font-size18px;text-shadow:0 0 10px rgba(111,255,231,.35)}.value-list{margin:10px 9px;max-height:210px;overflow:auto;font-size8px;color:#b7e5e5;line-height:1.8;word-break:break-all}.value-list span{color:#75dce5}.radar{height:94px;margin:4px 9px;position:relative;border:1px solid rgba(92,194,205,.18)}.radar:before,.radar:after{content:"";position:absolute;inset:12px 32px;border:1px solid rgba(96,220,230,.35);border-radius:50%}.radar:after{inset:28px 48px}.radar .needle{position:absolute;left:50%;bottom:8px;width:1px;height:78px;background:linear-gradient(var(--cyan),transparent);transform-origin:bottom;transform:rotate(38deg);box-shadow:0 0 6px var(--cyan)}
+    .node{position:absolute;width:7px;height:7px;border:1px solid var(--cyan);transform:rotate(45deg);box-shadow:0 0 7px var(--cyan);z-index:4}.n1{left:18.5%;top:12%}.n2{right:18.5%;top:12%}.n3{left:18.5%;bottom:9%}.n4{right:18.5%;bottom:9%}
+    .axis,.stem{stroke:#66e1e9}.stem{stroke-width:1.6}.dot{fill:#92fff3;stroke:#cafffb;stroke-width:.7}.gridline{stroke:rgba(90,174,184,.15);stroke-width:.7}.label{fill:#79adb4;font-size8px}.label-zero{fill:#cafffb}.axis{stroke-width:1}
+    .source-link{position:absolute;right:18px;bottom:-14px;font-size7px;color:#5d9ba1;text-decoration:none}.source-link:hover{color:var(--cyan)}
+    @media(max-width:900px){.hud{padding:8px}.canvas{height:auto;min-height:1180px}.topbar{height:42px}.status span:not(.live){display:none}.mainplot{left:2%;top:4%;width:96%;height:260px}.xpanel{left:2%;top:28%;width:47%;height:230px}.hpanel{right:2%;top:28%;width:47%;height:230px}.ypanel{left:2%;top:49%;width:96%;height:250px}.codepanel{left:2%;top:72%;width:47%;height:260px}.resultpanel{right:2%;top:72%;width:47%;height:260px}.n1,.n2,.n3,.n4{display:none}}
   </style>
 </head>
 <body>
-  <header class="wrap">
-    <div class="eyebrow">Signal &amp; Systems · MATLAB lab</div>
-    <h1>Discrete convolution</h1>
-    <p class="intro">A visual walkthrough of the repository’s two MATLAB files: the input sequences, their convolution, and the code that computes and plots the result.</p>
-    <div class="chips"><span class="chip">Linear time-invariant systems</span><span class="chip">Finite discrete-time signals</span><span class="chip">Output support: n = −4…7</span></div>
-  </header>
+  <div class="hud">
+    <header class="topbar"><div class="brand"><div class="brand-mark"></div><div><strong>CONV//SYS</strong><small>DISCRETE SIGNAL LAB</small></div></div><div class="status"><span>NODE 08.42</span><span>CHANNEL 01</span><span class="live">SYSTEM LIVE</span></div></header>
+    <section class="canvas" aria-label="Signal and Systems convolution interface">
+      <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i><i class="node n1"></i><i class="node n2"></i><i class="node n3"></i><i class="node n4"></i>
+      <article class="module mainplot"><div class="module-title"><b>Y[N] // CONVOLVED OUTPUT</b><i></i></div><div class="mainplot-inner"><svg id="main-y" role="img" aria-label="Convolution stem plot"></svg></div><div class="watermark">SIGNAL.MATRIX // 023</div></article>
+      <article class="module xpanel"><div class="module-title"><b>X[N] // INPUT</b><i></i></div><svg id="plot-x" role="img" aria-label="Input x of n"></svg></article>
+      <article class="module hpanel"><div class="module-title"><b>H[N] // RESPONSE</b><i></i></div><svg id="plot-h" role="img" aria-label="Impulse response h of n"></svg></article>
+      <article class="module ypanel"><div class="module-title"><b>Y[N] // SPECTRAL TRACE</b><i></i></div><svg id="plot-y" role="img" aria-label="Convolution spectral trace"></svg></article>
+      <article class="module codepanel"><div class="module-title"><b>Untitled4.m // source</b><i></i></div><pre><code>x = [<span class="number">3,11,7,0,-1,4,2</span>];
+nx = <span class="number">-3:3</span>;
 
-  <main class="wrap">
-    <div class="section-heading">
-      <h2>Signal plots</h2>
-      <p class="hint">Stem plots use the exact sample values from <code>Untitled4.m</code>.</p>
-    </div>
-    <section class="charts" aria-label="Input and convolution signal plots">
-      <article class="card chart-card"><div class="chart-title"><h3 style="color:var(--cyan)">Input x[n]</h3><span>n = −3…3</span></div><svg class="plot" id="plot-x" role="img" aria-label="Stem plot of x of n"></svg></article>
-      <article class="card chart-card"><div class="chart-title"><h3 style="color:var(--violet)">Impulse response h[n]</h3><span>n = −1…4</span></div><svg class="plot" id="plot-h" role="img" aria-label="Stem plot of h of n"></svg></article>
-      <article class="card chart-card"><div class="chart-title"><h3 style="color:var(--orange)">Convolution y[n]</h3><span>n = −4…7</span></div><svg class="plot" id="plot-y" role="img" aria-label="Stem plot of the convolution output y of n"></svg></article>
+h = [<span class="number">2,3,0,-5,2,1</span>];
+nh = <span class="number">-1:4</span>;
+
+[y,ny] = <span class="kw">myconv</span>(x,nx,h,nh);
+
+<span class="comment">% Display convolution</span>
+<span class="kw">stem</span>(ny,y);
+<span class="kw">xlabel</span>(<span class="number">'n'</span>);
+<span class="kw">ylabel</span>(<span class="number">'y[n]'</span>);
+<span class="kw">title</span>(<span class="number">'Convolution'</span>);
+<span class="kw">grid</span> on;
+
+<span class="comment">//--------------------------------</span>
+<span class="comment">// myconv.m</span>
+<span class="kw">function</span> [y,ny] = myconv(x,nx,h,nh)
+ny_start = nx(<span class="number">1</span>) + nh(<span class="number">1</span>);
+y_end = nx(<span class="kw">end</span>) + nh(<span class="kw">end</span>);
+y = <span class="kw">conv</span>(x,h); ny = ny_start:ny_end;
+<span class="kw">end</span></code></pre></article>
+      <article class="module resultpanel"><div class="module-title"><b>Analysis / result</b><i></i></div><div class="metric"><small>OUTPUT RANGE</small><strong id="range">N −4 : 7</strong></div><div class="metric"><small>SAMPLE COUNT</small><strong>12</strong></div><div class="radar"><div class="needle"></div></div><div class="value-list"><span>Y[N]</span> = [<b id="values"></b>]</div></article>
     </section>
-
-    <div class="section-heading" style="margin-top:34px">
-      <h2>The MATLAB files</h2>
-      <p class="hint">Original source, formatted for readability.</p>
-    </div>
-    <section class="code-grid" aria-label="MATLAB source code">
-      <article class="card code-card">
-        <div class="code-head"><span class="file-name">Untitled4.m</span><span class="file-type">Example &amp; plotting script</span></div>
-        <pre><code>x = [<span class="num">3</span>, <span class="num">11</span>, <span class="num">7</span>, <span class="num">0</span>, <span class="num">-1</span>, <span class="num">4</span>, <span class="num">2</span>];
-nx = <span class="num">-3</span>:<span class="num">3</span>;
-
-h = [<span class="num">2</span>, <span class="num">3</span>, <span class="num">0</span>, <span class="num">-5</span>, <span class="num">2</span>, <span class="num">1</span>];
-nh = <span class="num">-1</span>:<span class="num">4</span>;
-
-[y, ny] = myconv(x, nx, h, nh)
-
-<span class="com">% Plot the result</span>
-<span class="fn">stem</span>(ny, y);
-<span class="fn">xlabel</span>(<span class="str">'n'</span>);
-<span class="fn">ylabel</span>(<span class="str">'y[n]'</span>);
-<span class="fn">title</span>(<span class="str">'Convolution'</span>);
-<span class="fn">grid</span> on;</code></pre>
-      </article>
-      <article class="card code-card">
-        <div class="code-head"><span class="file-name">myconv.m</span><span class="file-type">Modified convolution routine</span></div>
-        <pre><code><span class="kw">function</span> [y, ny] = myconv(x, nx, h, nh)
-<span class="com">% MYCONV Modified convolution routine for signal processing</span>
-<span class="com">%   [y, ny] = myconv(x, nx, h, nh)</span>
-<span class="com">%   y  = convolution result</span>
-<span class="com">%   ny = index support of y</span>
-<span class="com">%   x  = first signal</span>
-<span class="com">%   nx = index support of x</span>
-<span class="com">%   h  = second signal</span>
-<span class="com">%   nh = index support of h</span>
-
-    <span class="com">% Calculate the starting and ending indices of y[n]</span>
-    ny_start = nx(<span class="num">1</span>) + nh(<span class="num">1</span>);
-    ny_end   = nx(<span class="kw">end</span>) + nh(<span class="kw">end</span>);
-
-    <span class="com">% Generate the index vector for y[n]</span>
-    ny = ny_start : ny_end;
-
-    <span class="com">% Compute the convolution using MATLAB's built-in conv function</span>
-    y = <span class="fn">conv</span>(x, h);
-
-<span class="kw">end</span></code></pre>
-      </article>
-    </section>
-
-    <aside class="card result" aria-live="polite">
-      <div><strong>Computed result</strong><p>y[n] = x[n] * h[n], with output indices starting at nx(1) + nh(1).</p></div>
-      <div class="values" id="result-values"></div>
-    </aside>
-  </main>
-  <footer><div class="wrap">Source: <a href="https://github.com/ia-ris/Signal-and-Systems">ia-ris/Signal-and-Systems</a> · The charts are rendered locally in this page.</div></footer>
-
+  </div>
   <script>
-    const x = [3, 11, 7, 0, -1, 4, 2];
-    const nx = [-3, -2, -1, 0, 1, 2, 3];
-    const h = [2, 3, 0, -5, 2, 1];
-    const nh = [-1, 0, 1, 2, 3, 4];
-    const y = Array(x.length + h.length - 1).fill(0);
-    for (let i = 0; i < x.length; i++) {
-      for (let j = 0; j < h.length; j++) y[i + j] += x[i] * h[j];
+    const x=[3,11,7,0,-1,4,2],nx=[-3,-2,-1,0,1,2,3];
+    const h=[2,3,0,-5,2,1],nh=[-1,0,1,2,3,4];
+    const y=Array(12).fill(0);for(let i=0;i<x.length;i++)for(let j=0;j<h.length;j++)y[i+j]+=x[i]*h[j];
+    const ny=Array.from({length:12},(_,i)=>-4+i);document.getElementById('values').textContent=y.join(', ');
+    function draw(id,indices,values,color='#66e1e9',large=false){
+      const svg=document.getElementById(id),W=large?700:350,H=large?320:190,L=30,R=12,T=16,B=30;
+      const max=Math.max(...values.map(Math.abs),1),zero=T+(H-T-B)/2,scale=(H-T-B)/2/max*.82;
+      const px=i=>L+i*(W-L-R)/(values.length-1),py=v=>zero-v*scale;
+      let s=`<defs><filter id="gl"><feGaussianBlur stdDeviation="2" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>`;
+      for(let i=0;i<=8;i++){const gy=T+i*(H-T-B)/8;s+=`<line class="gridline" x1="${L}" y1="${gy}" x2="${W-R}" y2="${gy}"/>`}
+      s+=`<line class="axis" x1="${L}" y1="${zero}" x2="${W-R}" y2="${zero}"/>`;
+      values.forEach((v,i)=>{const X=px(i),Y=py(v);s+=`<line class="stem" x1="${X}" y1="${zero}" x2="${X}" y2="${Y}" stroke="${color}"/><circle class="dot" cx="${X}" cy="${Y}" r="${large?4:3}"/><text class="label label-zero" x="${X}" y="${Y+(v>=0?-7:13)}" text-anchor="middle">${v}</text><text class="label" x="${X}" y="${H-10}" text-anchor="middle">${indices[i]}</text>`});
+      svg.setAttribute('viewBox',`0 0 ${W} ${H}`);svg.innerHTML=s;
     }
-    const ny = Array.from({ length: y.length }, (_, i) => nx[0] + nh[0] + i);
-
-    function drawStem(id, indices, values, color) {
-      const svg = document.getElementById(id);
-      const W = 350, H = 205, left = 34, right = 12, top = 14, bottom = 34;
-      const zeroY = top + (H - top - bottom) / 2;
-      const maxAbs = Math.max(...values.map(Math.abs), 1);
-      const plotHeight = H - top - bottom;
-      const scale = (plotHeight / 2 - 9) / maxAbs;
-      const xPos = i => left + (indices.length === 1 ? 0 : i * (W - left - right) / (indices.length - 1));
-      const yPos = value => zeroY - value * scale;
-      const ticks = [-maxAbs, 0, maxAbs];
-      let out = '';
-      ticks.forEach(t => {
-        const py = yPos(t);
-        out += `<line class="gridline" x1="${left}" y1="${py}" x2="${W-right}" y2="${py}"/>`;
-        out += `<text class="tick" x="${left-7}" y="${py+3}" text-anchor="end">${t}</text>`;
-      });
-      out += `<line class="axis" x1="${left}" y1="${zeroY}" x2="${W-right}" y2="${zeroY}"/>`;
-      out += `<text class="axis-label" x="${W-right}" y="${H-5}" text-anchor="end">n</text>`;
-      values.forEach((v, i) => {
-        const px = xPos(i), py = yPos(v);
-        out += `<line class="stem" x1="${px}" y1="${zeroY}" x2="${px}" y2="${py}" stroke="${color}"/>`;
-        out += `<circle class="dot" cx="${px}" cy="${py}" r="4" fill="${color}"/>`;
-        out += `<text class="tick" x="${px}" y="${H-17}" text-anchor="middle">${indices[i]}</text>`;
-        out += `<text class="tick" x="${px}" y="${py + (v >= 0 ? -8 : 14)}" text-anchor="middle" fill="#edf2fb">${v}</text>`;
-      });
-      svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
-      svg.innerHTML = out;
-    }
-
-    drawStem('plot-x', nx, x, '#66e3d2');
-    drawStem('plot-h', nh, h, '#b7a0ff');
-    drawStem('plot-y', ny, y, '#ffb86b');
-    document.getElementById('result-values').textContent = `n = ${ny[0]}…${ny[ny.length - 1]}  ·  [${y.join(', ')}]`;
+    function drawMain(){draw('main-y',ny,y,'#74fff0',true)}
+    draw('plot-x',nx,x);draw('plot-h',nh,h,'#58c6dd');draw('plot-y',ny,y,'#91fff3');drawMain();
   </script>
+  <a class="source-link" href="https://github.com/ia-ris/Signal-and-Systems">SOURCE: IA-RIS/SIGNAL-AND-SYSTEMS</a>
 </body>
 </html>
